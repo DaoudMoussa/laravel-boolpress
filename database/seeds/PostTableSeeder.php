@@ -22,6 +22,18 @@ class PostTableSeeder extends Seeder
             $newPost->author = $faker->name;
             $newPost->header = $faker->sentence();
             $newPost->post_date = $faker->date();
+
+            $slug = Str::slug($newPost->header);
+            $currentPost = Post::where('slug', $slug)->first();
+
+            $counter = 1;
+            while($currentPost) {
+                $slug = $slug . '-' . $counter;
+                $counter++;
+                $currentPost = Post::where('slug', $slug)->first();
+            }
+
+            $newPost->slug = $slug;
             $newPost->save();
         }
     }
