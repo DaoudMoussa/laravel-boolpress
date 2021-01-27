@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Str;
+
 class PostController extends Controller
 {
     /**
@@ -28,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-
+        return view('admin.posts.create');
     }
 
     /**
@@ -39,7 +41,28 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newPost = new Post();
+        $newPost->fill($request->all());
+
+        $newPost->post_date = date('Y-m-d');
+
+        $slug = Str::slug($request->header);
+        // $slug = $newPost->header;
+
+        $currentPost = Post::where('slug', $slug)->first();
+        $counter = 1;
+
+        while ($currentPost) {
+            $slug = $slug . '-' . $counter;
+            $currentPost = Post::where('slug', $slug)->first();
+            $counter++;
+        }
+
+        $newPost->slug = $slug;
+
+        $newPost->save();
+
+        return redirect()->route('admin.posts.show', [ 'post' => $newPost->id ]);
     }
 
     /**
@@ -84,7 +107,19 @@ class PostController extends Controller
         if ($post) {
             $post->update($request->all());
 
-            return redirect()->route('posts.show', [ 'post' => $post->id ]);
+            $slug = Str::slug($request->header);
+            $currentPost = Post::where('slug', $slug)->first();
+            $counter = 1;
+
+            while ($currentPost) {
+                $slug = $slug . '-' . $counter;
+                $currentPost = Post::where('slug', $slug)->first();
+                $counter++;
+            }
+
+            $post->slug = $slug;
+
+            return redirect()->route('admin.posts.show', [ 'post' => $post->id ]);
         } else {
             abort(404);
         }

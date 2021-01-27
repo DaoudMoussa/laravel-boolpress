@@ -9,24 +9,16 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label>Nome</label>
-                            <input value="{{ $post->header }}" type="text" name="name" class="form-control" placeholder="Inserisci nome prodotto">
-                        </div>
-                        <div class="form-group">
-                            <label>Tipo</label>
-                            <input value="{{ $post->body }}" type="text" name="type" class="form-control" placeholder="Inserisci tipo prodotto">
+                            <label>Titolo post</label>
+                            <input value="{{ $post->header }}" type="text" name="header" class="form-control" placeholder="Inserisci titolo post">
                         </div>
                         <div class="form-group">
                             <label>Autore</label>
-                            <input value="{{ $post->author }}" type="text" name="type" class="form-control" placeholder="Inserisci tipo prodotto">
+                            <input value="{{ $post->author }}" type="text" name="author" class="form-control" placeholder="Inserisci il nome dell'autore">
                         </div>
                         <div class="form-group">
-                            <label>Data di publicazione</label>
-                            <input value="{{ $post->post_date }}" type="text" name="type" class="form-control" placeholder="Inserisci tipo prodotto">
-                        </div>
-                        <div class="form-group">
-                            <label>slug</label>
-                            <input value="{{ $post->slug }}" type="text" name="type" class="form-control" placeholder="Inserisci tipo prodotto">
+                            <label>Testo post</label>
+                            <textarea rows="10" type="text" name="body" class="form-control" placeholder="Inserisci testo del post">{{ $post->body }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-success">Submit</button>
                     </form>
