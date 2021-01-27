@@ -20,6 +20,15 @@
                             <label>Testo post</label>
                             <textarea rows="10" type="text" name="body" class="form-control" placeholder="Inserisci testo del post">{{ $post->body }}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select name="category_id">
+                                <option value="">--seleziona categoria--</option>
+                                @foreach (App\Category::all() as $category)
+                                    <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected=selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-success">Submit</button>
                     </form>
                 </div>

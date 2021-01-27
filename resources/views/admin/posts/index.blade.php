@@ -7,6 +7,7 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="sol">Categoria</th>
                     <th scope="col">Intestazione</th>
                     <th scope="col">Autore</th>
                     <th scope="col">Data</th>
@@ -18,6 +19,7 @@
                 @foreach ($posts as $post)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
+                        <td>{{ $post->category->name }}</td>
                         <td>{{ $post->header }}</td>
                         <td>{{ $post->author }}</td>
                         <td>{{ $post->post_date }}</td>

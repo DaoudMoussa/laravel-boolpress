@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 use App\Post;
+use App\Category;
 
 class PostTableSeeder extends Seeder
 {
@@ -15,10 +16,16 @@ class PostTableSeeder extends Seeder
     {
         for ($i=0; $i < 30; $i++) {
             $newPost = new Post();
-            // $newPost->header = $faker->realText(rand(50, 200));
-            $newPost->header = $faker->realText(50);
-            // $newPost->body = $faker->realText(rand(500, 5000));
-            $newPost->body = $faker->realText(500);
+            $newPost->header = $faker->realText(rand(50, 200));
+            // $newPost->header = $faker->realText(50);
+            $newPost->body = $faker->realText(rand(500, 5000));
+            // $newPost->body = $faker->realText(500);
+
+            while(!Category::all()->pluck('id')->contains($newPost->category_id )) {
+                $lastCategoryObj = Category::orderBy('id', 'desc')->first();
+                $biggestCategoryId = $lastCategoryObj->id;
+                $newPost->category_id = rand(1, $biggestCategoryId);
+            }
             $newPost->author = $faker->name;
             $newPost->header = $faker->sentence();
             $newPost->post_date = $faker->date();

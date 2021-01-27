@@ -13,6 +13,7 @@
                             <p>{{ $post->author }}</p>
                             <p>{{ $post->post_date }}</p>
                             <p>{{ $post->slug }}</p>
+                            <p>{{ $post->category->name }}</p>
                         </li>
                     </ul>
                 </div>
