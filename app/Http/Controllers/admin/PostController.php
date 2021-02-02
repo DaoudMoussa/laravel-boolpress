@@ -111,7 +111,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         if ($post) {
-            $post->update($request->all());
+            $form_data = $request->all();
 
             $slug = Str::slug($request->header);
             $baseSlug = $slug;
@@ -125,7 +125,10 @@ class PostController extends Controller
                 $counter++;
             }
 
-            $post->slug = $slug;
+            $form_data['slug'] = $slug;
+
+            $post->update($form_data);
+
 
             return redirect()->route('admin.posts.show', [ 'post' => $post->id ]);
         } else {
