@@ -39,7 +39,9 @@
                         <li>
                             <a href="{{ route('categories.index') }}">Categorie</a>
                         </li>
-
+                        <li>
+                            <a href="{{ route('tags.index') }}">Tags</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

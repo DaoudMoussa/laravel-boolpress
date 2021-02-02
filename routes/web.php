@@ -25,10 +25,14 @@ Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
 Route::get('/categories', 'CategoryController@index')->name('categories.index');
 Route::get('/categories/{category}', 'CategoryController@show')->name('categories.show');
 
+Route::get('/tags', 'TagController@index')->name('tags.index');
+Route::get('/tags/{tag}', 'TagController@show')->name('tags.show');
+
 Auth::routes();
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function() {
     Route::get('/', 'HomeController@index')->name('index');
     Route::resource('/posts', 'PostController');
     Route::resource('/categories', 'CategoryController');
+    Route::resource('/tags', 'TagController');
 });

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -32,7 +34,8 @@ class PostController extends Controller
     public function create()
     {
         $data = [
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'tags' => Tag::all()
         ];
 
         return view('admin.posts.create', $data);
@@ -64,8 +67,9 @@ class PostController extends Controller
         }
 
         $newPost->slug = $slug;
-
         $newPost->save();
+
+        $newPost->tags()->sync($request->tags);
 
         return redirect()->route('admin.posts.show', [ 'post' => $newPost->id ]);
     }
@@ -95,7 +99,8 @@ class PostController extends Controller
     {
         $data = [
             'post' => $post,
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'tags' => Tag::all()
         ];
 
         return view('admin.posts.edit', $data);
@@ -128,7 +133,7 @@ class PostController extends Controller
             $form_data['slug'] = $slug;
 
             $post->update($form_data);
-
+            $post->tags()->sync($request->tags);
 
             return redirect()->route('admin.posts.show', [ 'post' => $post->id ]);
         } else {
@@ -145,6 +150,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         if ($post) {
+            $post->tags()->sync([]);
             $post->delete();
 
             return redirect()->route('admin.posts.index');

@@ -5,10 +5,10 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Category;
+use App\Tag;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,10 @@ class CategoryController extends Controller
     public function index()
     {
         $data = [
-            'categories' => Category::all()
+            'tags' => Tag::all()
         ];
 
-        return view('admin.categories.index', $data);
+        return view('admin.tags.index', $data);
     }
 
     /**
@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -42,17 +42,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $newCategory = new Category();
-        $newCategory->fill($request->all());
-        $newCategory->slug = Str::slug($request->name);
+        $newTag = new Tag();
+        $newTag->fill($request->all());
+        $newTag->slug = Str::slug($request->name);
 
-        $newCategory->save();
+        $newTag->save();
 
         $data = [
-            'categories' => Category::all()
+            'tags' => Tag::all()
         ];
 
-        return redirect()->route('admin.categories.index', $data);
+        return redirect()->route('admin.tags.index', $data);
     }
 
     /**
@@ -61,13 +61,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Tag $tag)
     {
         $data = [
-            'category' => $category,
+            'tag' => $tag,
         ];
 
-        return view('admin.categories.show', $data);
+        return view('admin.tags.show', $data);
     }
 
     /**
@@ -76,13 +76,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Tag $tag)
     {
         $data = [
-            'category' => $category
+            'tag' => $tag
         ];
 
-        return view('admin.categories.edit', $data);
+        return view('admin.tags.edit', $data);
     }
 
     /**
@@ -92,18 +92,18 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Tag $tag)
     {
         $form_data = $request->all();
         $form_data['slug'] = Str::slug($form_data['name']);
 
-        $category->update($form_data);
+        $tag->update($form_data);
 
         $data = [
-            'category' => $category
+            'tag' => $tag
         ];
 
-        return redirect()->route('admin.categories.show', $data);
+        return redirect()->route('admin.tags.show', $data);
     }
 
     /**
@@ -112,19 +112,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Tag $tag)
     {
-        foreach ($category->posts as $post) {
-            $post->category_id = null;
-            $post->update();
-        }
+        $tag->posts()->sync([]);
 
-        $category->delete();
+        $tag->delete();
 
         $data = [
-            'categories' => Category::all()
+            'tags' => Tag::all()
         ];
 
-        return redirect()->route('admin.categories.index', $data);
+        return redirect()->route('admin.tags.index', $data);
     }
 }

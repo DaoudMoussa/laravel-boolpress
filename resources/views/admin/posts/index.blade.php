@@ -7,10 +7,11 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="sol">Categoria</th>
                     <th scope="col">Intestazione</th>
                     <th scope="col">Autore</th>
                     <th scope="col">Data</th>
+                    <th scope="sol">Categoria</th>
+                    <th scope="sol">Tags</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Azioni</th>
                 </tr>
@@ -19,10 +20,25 @@
                 @foreach ($posts as $post)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
-                        <td>{{ $post->category ? $post->category->name : '-' }}</td>
                         <td>{{ $post->header }}</td>
                         <td>{{ $post->author }}</td>
                         <td>{{ $post->post_date }}</td>
+                        <td>
+                            @if ($post->category)
+                                <a href="{{ route('admin.categories.show', [ 'category' => $post->category->id ]) }}">
+                                    {{ $post->category->name }}
+                                </a>
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>
+                            @forelse ($post->tags as $tag)
+                                <a href="{{ route('admin.tags.show', [ 'tag' => $tag->id ]) }}">{{ $tag->name }}</a>{{ $loop->last ? '.' : ',' }}
+                            @empty
+                                -
+                            @endforelse
+                        </td>
                         <td>{{ $post->slug }}</td>
                         <td>
                             <a class="btn btn-info" href="{{ route('admin.posts.show', [ 'post' => $post->id ]) }}">Dettaglio</a>

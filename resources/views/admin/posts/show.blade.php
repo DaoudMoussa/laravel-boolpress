@@ -13,9 +13,16 @@
                             <p>{{ $post->author }}</p>
                             <p>{{ $post->post_date }}</p>
                             <p>{{ $post->slug }}</p>
-                            @if ($post->category)
-                                <p>{{ $post->category->name }}</p>
-                            @endif
+                            <p>Categoria: {{ $post->category ? $post->category->name : '-' }}</p>
+
+                            <p>
+                                tags:
+                                @forelse ($post->tags as $tag)
+                                    {{ $tag->name }}{{ $loop->last ? '.' : ',' }}
+                                @empty
+                                    -
+                                @endforelse
+                            </p>
                         </li>
                     </ul>
                 </div>
