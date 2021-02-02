@@ -10,7 +10,9 @@
             </div>
             <div class="col-4">data di pubblicazione: {{ $post->post_date }}</div>
             <div class="col-4">Autore: {{ $post->author }}</div>
-            <div class="col-4">Categoria: {{ $post->category->name }}</div>
+            @if ($post->category)
+                <div class="col-4">Categoria: {{ $post->category->name }}</div>
+            @endif
         </div>
     </div>
 </main>

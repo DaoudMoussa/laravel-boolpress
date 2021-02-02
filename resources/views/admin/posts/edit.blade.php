@@ -24,7 +24,7 @@
                             <label>Categoria</label>
                             <select name="category_id">
                                 <option value="">--seleziona categoria--</option>
-                                @foreach (App\Category::all() as $category)
+                                @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected=selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>

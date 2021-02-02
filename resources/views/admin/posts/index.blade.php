@@ -19,7 +19,7 @@
                 @foreach ($posts as $post)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
-                        <td>{{ $post->category->name }}</td>
+                        <td>{{ $post->category ? $post->category->name : '-' }}</td>
                         <td>{{ $post->header }}</td>
                         <td>{{ $post->author }}</td>
                         <td>{{ $post->post_date }}</td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -30,7 +31,11 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $data = [
+            'categories' => Category::all()
+        ];
+
+        return view('admin.posts.create', $data);
     }
 
     /**
@@ -47,13 +52,13 @@ class PostController extends Controller
         $newPost->post_date = date('Y-m-d');
 
         $slug = Str::slug($request->header);
-        // $slug = $newPost->header;
+        $baseSlug = $slug;
 
         $currentPost = Post::where('slug', $slug)->first();
         $counter = 1;
 
         while ($currentPost) {
-            $slug = $slug . '-' . $counter;
+            $slug = $baseSlug . '-' . $counter;
             $currentPost = Post::where('slug', $slug)->first();
             $counter++;
         }
@@ -89,7 +94,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $data = [
-            'post' => $post
+            'post' => $post,
+            'categories' => Category::all()
         ];
 
         return view('admin.posts.edit', $data);
@@ -108,11 +114,13 @@ class PostController extends Controller
             $post->update($request->all());
 
             $slug = Str::slug($request->header);
+            $baseSlug = $slug;
+
             $currentPost = Post::where('slug', $slug)->first();
             $counter = 1;
 
             while ($currentPost) {
-                $slug = $slug . '-' . $counter;
+                $slug = $baseSlug . '-' . $counter;
                 $currentPost = Post::where('slug', $slug)->first();
                 $counter++;
             }

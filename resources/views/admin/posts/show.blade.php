@@ -13,7 +13,9 @@
                             <p>{{ $post->author }}</p>
                             <p>{{ $post->post_date }}</p>
                             <p>{{ $post->slug }}</p>
-                            <p>{{ $post->category->name }}</p>
+                            @if ($post->category)
+                                <p>{{ $post->category->name }}</p>
+                            @endif
                         </li>
                     </ul>
                 </div>
