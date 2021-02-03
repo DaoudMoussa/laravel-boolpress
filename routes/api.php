@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/posts', 'Api\HomeController@index');
+Route::post('/posts', 'Api\HomeController@index')->middleware('apiToken');
