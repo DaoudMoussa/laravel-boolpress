@@ -16,6 +16,12 @@
 
                     {{ __('You are logged in!') }}
                 </div>
+                @if (!Auth::user()->api_token)
+                    <form action="{{ route('admin.getApiToken') }}" method="post">
+                        @csrf
+                        <button class="btn btn-primary" type="submit">Get api token</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
