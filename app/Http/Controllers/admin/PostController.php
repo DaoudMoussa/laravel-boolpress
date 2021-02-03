@@ -49,6 +49,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'header' => 'required|max:100',
+            'body' => 'required',
+            'author' => 'required|max:100',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
+        ]);
+
         $newPost = new Post();
         $newPost->fill($request->all());
 
@@ -68,6 +76,7 @@ class PostController extends Controller
 
         $newPost->slug = $slug;
         $newPost->save();
+
 
         $newPost->tags()->sync($request->tags);
 
@@ -116,6 +125,13 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         if ($post) {
+            $request->validate([
+                'header' => 'required|max:100',
+                'body' => 'required',
+                'author' => 'required|max:100',
+                'category_id' => 'nullable|exists:categories,id',
+                'tags' => 'exists:tags,id'
+            ]);
             $form_data = $request->all();
 
             $slug = Str::slug($request->header);
